@@ -6,12 +6,18 @@ library(timeDate)
 library(baydeltautils)
 library(data.table)
 
+# bring in SacWAM results
 
 sacWAM_base <- read.csv("sac_wam_postprocessor_model_1_2.csv", skip=11)
+
 # convert index to machine readable date
 sacWAM_base$Index <- ymd(sacWAM_base$Index)
 
+# bring in station locations
+
 stationLoc <- read.csv("Station_Coordinates.csv")
+
+# bring in water year types table
 
 wyTypes <- read.csv("water_year_types.csv")
 
@@ -147,7 +153,7 @@ wyTypes_two <- wyTypes[48:94,]
 ui <- fluidPage(
   tabsetPanel(
     tabPanel(title="Maps",
-             titlePanel("Delta Water Imports and Exports"),
+             titlePanel("Sacramento/San Joaquin Delta Water Imports and Exports"),
              sidebarLayout(
                sidebarPanel(
                  uiOutput("sliders")),
