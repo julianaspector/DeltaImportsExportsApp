@@ -6,7 +6,7 @@ library(timeDate)
 library(baydeltautils)
 library(data.table)
 
-setwd("C:/Users/JSpector/Documents/Delta Imports Exports Shiny App")
+
 sacWAM_base <- read.csv("sac_wam_postprocessor_model_1_2.csv", skip=11)
 # convert index to machine readable date
 sacWAM_base$Index <- ymd(sacWAM_base$Index)
