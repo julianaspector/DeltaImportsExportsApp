@@ -16,10 +16,10 @@ Critical | 5
 
 More documentation on water year type classifications can be found in Chapter 7: https://www.waterboards.ca.gov/waterrights/water_issues/programs/bay_delta/sacwam/docs/sacwam_documentation_beta_0.2.pdf.
 
-The water year types for water years 1921-2014 are avaialable in the Excel postprocessor file available at this link: (https://www.waterboards.ca.gov/waterrights/water_issues/programs/bay_delta/sacwam/sacwam_download.html/) in the "Water Year Types" tab.
+The water year types for water years 1921-2014 are avaialable in the Excel postprocessor file available at this link: (https://www.waterboards.ca.gov/waterrights/water_issues/programs/bay_delta/sacwam/sacwam_download.html) in the "Water Year Types" tab.
 
 ## Dayflow Stations
-The flow stations chosen to represent Delta water imports and exports are based on the Department of Water Resources Dayflow Program (https://water.ca.gov/Programs/Environmental-Services/Compliance-Monitoring-And-Assessment/Dayflow-Data). A map of the stations for which data is utilized in the app can be found at this [link] (file:///C:/Users/JSpector/Documents/Delta%20Imports%20Exports%20Shiny%20App/map.html). Below is a table of the station names/locations and whether they are classified as import or export stations:
+The flow stations chosen to represent Delta water imports and exports are based on the Department of Water Resources Dayflow Program (https://water.ca.gov/Programs/Environmental-Services/Compliance-Monitoring-And-Assessment/Dayflow-Data). A map of the stations for which data is utilized in the app can be found at this link: https://C:/Users/JSpector/Documents/Delta%20Imports%20Exports%20Shiny%20App/map.html Below is a table of the station names/locations and whether they are classified as import or export stations:
 
 Station Name | Classification
 --- | ---
