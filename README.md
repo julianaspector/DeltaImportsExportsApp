@@ -39,7 +39,7 @@ Barker Slough Pumping | Exports
 Central Valley Pumping | Exports
 
 ## Instructions to run app from RStudio and GitHub
-In an RStudio session (known to be working with Version 1.2.5001, R 3.5.1), install the [shiny] (https://github.com/rstudio/shiny) package and run the following commands:
+In an RStudio session (known to be working with Version 1.2.5001, R 3.5.1), install the [shiny](https://github.com/rstudio/shiny) package and run the following commands:
 
 ```
 library(shiny)
