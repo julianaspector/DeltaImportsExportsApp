@@ -14,7 +14,7 @@ Below Normal | 3
 Dry | 4
 Critical | 5
 
-More documentation on water year type classifications can be found in [Chapter 7](https://www.waterboards.ca.gov/waterrights/water_issues/programs/bay_delta/sacwam/docs/sacwam_documentation_beta_0.2.pdf)
+More information on water year type classifications can be found in [Chapter 7](https://www.waterboards.ca.gov/waterrights/water_issues/programs/bay_delta/sacwam/docs/sacwam_documentation_beta_0.2.pdf) of SacWAM documentation.
 
 The water year types for water years 1921-2014 are avaialable in the Excel postprocessor file available at this [link](https://www.waterboards.ca.gov/waterrights/water_issues/programs/bay_delta/sacwam/sacwam_download.html) in the "Water Year Types" tab.
 
