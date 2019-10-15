@@ -5,6 +5,8 @@ library(shiny)
 library(timeDate)
 library(baydeltautils)
 library(data.table)
+library(shinyWidgets)
+
 
 # bring in SacWAM results
 
@@ -106,6 +108,9 @@ exports$Label <- "Delta Exports"
 
 imports$WY <- waterYear(imports$Index)
 exports$WY <- waterYear(exports$Index)
+imports$Month <- wyMonth(imports$Index)
+exports$Month <- wyMonth(exports$Index)
+
 data$WY <- waterYear(data$Index)
 
 # combine imports and exports for accessing later
@@ -116,22 +121,21 @@ imports <- merge(imports, wyTypes, by="WY")
 exports <- merge(exports, wyTypes, by="WY")
 imports_exports <- merge(imports_exports, wyTypes, by="WY")
 
-# determin min and max dates for each slider bar
-data_dt <- data.table::data.table(data)
 
-data_maxDate <- data_dt[,max(Index.x), by=WYT]
-data_maxDate <- setorder(data_maxDate, WYT)
-data_minDate <- data_dt[,min(Index.x), by=WYT]
-data_minDate <- setorder(data_minDate, WYT)
+data_dt <- data.table::data.table(data)
+years_wyt <- data_dt[,unique(WY), by=WYT]
+years_wyt <- setorder(years_wyt, columns=WYT, V1)
+
 
 # set wyTypes to be integers for indices and numeric for WY
 wyTypes <- wyTypes %>% select(c("WY", "WYT"))
 
 
 # names of sliders
+slidersGroup <- c("Water Year Type 1 (Wet)", "Water Year Type 2 (Above Normal)", "Water Year Type 3 (Below Normal)", "Water Year Type 4 (Dry)", "Water Year Type 5 (Critical)")
 
-xAxisGroup <- c("Water Year Type 1", "Water Year Type 2", "Water Year Type 3", "Water Year Type 4", "Water Year Type 5")
-
+# names of selection boxes
+selectorsGroup <- c("Wet Years", "Above Normal Years", "Below Normal Years", "Dry Years", "Critical Years")
 
 # create match table
 WY_match <- data.table(WYT=c(1, 2, 3, 4, 5), Description=c("Wet", "Above Normal", "Below Normal", "Dry", "Critical"))
@@ -156,6 +160,7 @@ ui <- fluidPage(
              titlePanel("Sacramento/San Joaquin Delta Water Imports and Exports"),
              sidebarLayout(
                sidebarPanel(
+                 uiOutput("selections"),
                  uiOutput("sliders")),
                mainPanel(
                  fluidRow(
@@ -178,36 +183,53 @@ ui <- fluidPage(
     )
   )
 )
-
-
 server<-function(input,output,session){
   
   #Render the sliders
   output$sliders <- renderUI({
     # First, create a list of sliders each with a different name
-    sliders <- lapply(1:length(xAxisGroup), function(i) {
-      inputName <- xAxisGroup[i]
-      sliderInput(inputName, inputName, min=as.Date(data_minDate$V1[i]), max=as.Date(data_maxDate$V1[i]), value=as.Date(data_minDate$V1[i]), timeFormat="%b %Y")
+    sliders <- lapply(1:length(slidersGroup), function(i) {
+      inputName <- slidersGroup[i]
+      sliderTextInput(inputName, inputName, grid=TRUE, choices=c("Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep"))
     })
     # Create a tagList of sliders (this is important)
     do.call(tagList, sliders)
   })
   
+  # Render the selection boxes
+  output$selections <- renderUI({
+    selections <- lapply(1:length(selectorsGroup), function(i){
+    inputName <- selectorsGroup[i]
+    selectInput(inputName, inputName, choices=unique(subset(years_wyt$V1, years_wyt$WYT==i)))
+    })
+    do.call(tagList, selections)
+  })
+  
+  
   # subset the data based on user choice
   dataInput_one <- reactive({
-    imports_exports[imports_exports$Index.x==as.character(timeLastDayInMonth(input$"Water Year Type 1")) & imports_exports$WYT== 1,]
+    imports_exports[imports_exports$Month==as.character(input$"Water Year Type 1 (Wet)") &
+                      imports_exports$WY == as.numeric(input$"Wet Years") &
+                      imports_exports$WYT== 1,]
   })
   dataInput_two <- reactive({
-    imports_exports[imports_exports$Index.x==as.character(timeLastDayInMonth(input$"Water Year Type 2")) & imports_exports$WYT== 2,]
+    imports_exports[imports_exports$Month==as.character(input$"Water Year Type 2 (Above Normal)") &
+                      imports_exports$WY == as.numeric(input$"Above Normal Years") &
+                      imports_exports$WYT== 2,]
   })
   dataInput_three <- reactive({
-    imports_exports[imports_exports$Index.x==as.character(timeLastDayInMonth(input$"Water Year Type 3")) & imports_exports$WYT== 3,]
+    imports_exports[imports_exports$Month==as.character(input$"Water Year Type 3 (Below Normal)") &
+                      imports_exports$WY == as.numeric(input$"Below Normal Years") &
+                      imports_exports$WYT== 3,]
   })
   dataInput_four <- reactive({
-    imports_exports[imports_exports$Index.x==as.character(timeLastDayInMonth(input$"Water Year Type 4")) & imports_exports$WYT== 4,]
-  })
+    imports_exports[imports_exports$Month==as.character(input$"Water Year Type 4 (Dry)") &
+                      imports_exports$WY == as.numeric(input$"Dry Years") &
+                      imports_exports$WYT== 4,]  })
   dataInput_five <- reactive({
-    imports_exports[imports_exports$Index.x==as.character(timeLastDayInMonth(input$"Water Year Type 5")) & imports_exports$WYT== 5,]
+    imports_exports[imports_exports$Month==as.character(input$"Water Year Type 5 (Critical)") &
+                      imports_exports$WY == as.numeric(input$"Critical Years") &
+                      imports_exports$WYT== 5,]
   })
   
   # render basemap and legend for each water year type (static)
