@@ -39,4 +39,4 @@ Barker Slough Pumping | Exports
 Central Valley Pumping | Exports
 
 ## Access the app
-The app is hosted online via shinyapps.io at this [link](https://jjspector.shinyapps.io/yuba_american_temp_comparison/).
+The app is hosted online via shinyapps.io at this [link](https://jjspector.shinyapps.io/deltaimportsexportsapp/).
