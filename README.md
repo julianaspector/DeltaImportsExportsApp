@@ -37,3 +37,6 @@ Clifton Court Inflow | Exports
 San Joaquin River at Vernalis | Imports
 Barker Slough Pumping | Exports
 Central Valley Pumping | Exports
+
+## Access the app
+The app is hosted online via shinyapps.io at this [link](https://jjspector.shinyapps.io/deltaimportsexportsapp/).
