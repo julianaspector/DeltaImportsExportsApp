@@ -16,7 +16,7 @@ Critical | 5
 
 More information on water year type classifications can be found in [Chapter 7](https://www.waterboards.ca.gov/waterrights/water_issues/programs/bay_delta/sacwam/docs/sacwam_documentation_beta_0.2.pdf) of SacWAM documentation.
 
-The water year types for water years 1921-2014 are avaialable in the Excel postprocessor file available at this [link](https://www.waterboards.ca.gov/waterrights/water_issues/programs/bay_delta/sacwam/sacwam_download.html) in the "Water Year Types" tab.
+The water year types for water years 1921-2014 are available in the Excel postprocessor file available at this [link](https://www.waterboards.ca.gov/waterrights/water_issues/programs/bay_delta/sacwam/sacwam_download.html) in the "Water Year Types" tab.
 
 ## Dayflow Stations
 The flow stations chosen to represent Delta water imports and exports are based on the Department of Water Resources [Dayflow Program](https://water.ca.gov/Programs/Environmental-Services/Compliance-Monitoring-And-Assessment/Dayflow-Data). Below is a table of the station names/locations and whether they are classified as import or export stations:
@@ -37,13 +37,3 @@ Clifton Court Inflow | Exports
 San Joaquin River at Vernalis | Imports
 Barker Slough Pumping | Exports
 Central Valley Pumping | Exports
-
-## Instructions to run app from RStudio and GitHub
-In an RStudio session (known to be working with Version 1.2.5001, R 3.5.1), install the [shiny](https://github.com/rstudio/shiny) package and run the following commands:
-
-```
-library(shiny)
-runGitHub ("DeltaImportsExportsApp", "julianaspector")
-
-```
-
