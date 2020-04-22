@@ -26,18 +26,18 @@ waterYear <- function(date,
 # bring in SacWAM results
 
 sacWAM_base <-
-  read.csv("C:/Users/Jules/Documents/GitHub/DeltaImportsExportsApp/Data/sac_wam_postprocessor_model_1_2.csv", skip = 11)
+  read.csv("sac_wam_postprocessor_model_1_2.csv", skip = 11)
 
 # convert index to machine readable date
 sacWAM_base$Index <- ymd(sacWAM_base$Index)
 
 # bring in station locations
 
-stationLoc <- read.csv("C:/Users/Jules/Documents/GitHub/DeltaImportsExportsApp/Data/Station_Coordinates.csv")
+stationLoc <- read.csv("Station_Coordinates.csv")
 
 # bring in water year types table
 
-wyTypes <- read.csv("C:/Users/Jules/Documents/GitHub/DeltaImportsExportsApp/Data/water_year_types.csv")
+wyTypes <- read.csv("water_year_types.csv")
 
 # select relevant columns for SacWAM data and merge station location with station data
 
