@@ -5,6 +5,7 @@ library(shiny)
 library(timeDate)
 library(data.table)
 library(shinyWidgets)
+library(DT)
 
 # function for wyMonth
 wyMonth <- function(date, wyStart = 10) {
@@ -14,7 +15,9 @@ wyMonth <- function(date, wyStart = 10) {
 }
 
 #function for waterYear
-waterYear <- function(date, wyStart = 10, offset=1) {
+waterYear <- function(date,
+                      wyStart = 10,
+                      offset = 1) {
   waterYear <- lubridate::year(date) + (lubridate::month(date) >
                                           (wyStart - 1)) + offset - 1
   return(waterYear)
@@ -23,18 +26,18 @@ waterYear <- function(date, wyStart = 10, offset=1) {
 # bring in SacWAM results
 
 sacWAM_base <-
-  read.csv("sac_wam_postprocessor_model_1_2.csv", skip = 11)
+  read.csv("C:/Users/Jules/Documents/GitHub/DeltaImportsExportsApp/Data/sac_wam_postprocessor_model_1_2.csv", skip = 11)
 
 # convert index to machine readable date
 sacWAM_base$Index <- ymd(sacWAM_base$Index)
 
 # bring in station locations
 
-stationLoc <- read.csv("Station_Coordinates.csv")
+stationLoc <- read.csv("C:/Users/Jules/Documents/GitHub/DeltaImportsExportsApp/Data/Station_Coordinates.csv")
 
 # bring in water year types table
 
-wyTypes <- read.csv("water_year_types.csv")
+wyTypes <- read.csv("C:/Users/Jules/Documents/GitHub/DeltaImportsExportsApp/Data/water_year_types.csv")
 
 # select relevant columns for SacWAM data and merge station location with station data
 
@@ -188,15 +191,15 @@ wyTypes <- merge(WY_match, wyTypes, by = "WYT")
 
 # rearrange columns
 wyTypes <- wyTypes %>%
-  select(-WYT, -Description, everything())
+  select(-WYT,-Description, everything())
 
 # sort by year
 
-wyTypes <- wyTypes[order(WY),]
+wyTypes <- wyTypes[order(WY), ]
 
 # divide water year types into two groups for tables
-wyTypes_one <- wyTypes[1:47,]
-wyTypes_two <- wyTypes[48:94,]
+wyTypes_one <- wyTypes[1:47, ]
+wyTypes_two <- wyTypes[48:94, ]
 
 ui <- fluidPage(tabsetPanel(
   tabPanel(
@@ -217,12 +220,7 @@ ui <- fluidPage(tabsetPanel(
     )
   ),
   tabPanel(title = "Water Year Information",
-           fluidRow(
-             column(4, tableOutput("table_one")),
-             column(4, tableOutput("table_two")),
-             column(4, tableOutput("table_three")),
-             column(4, tableOutput("table_four"))
-           ))
+           fluidRow(DT::dataTableOutput("wyInfo")))
 ))
 server <- function(input, output, session) {
   #Render the sliders
@@ -269,34 +267,34 @@ server <- function(input, output, session) {
   dataInput_one <- reactive({
     imports_exports[imports_exports$Month == as.character(input$"Water Year Type 1 (Wet)") &
                       imports_exports$WY == as.numeric(input$"Wet Years") &
-                      imports_exports$WYT == 1,]
+                      imports_exports$WYT == 1, ]
   })
   dataInput_two <- reactive({
     imports_exports[imports_exports$Month == as.character(input$"Water Year Type 2 (Above Normal)") &
                       imports_exports$WY == as.numeric(input$"Above Normal Years") &
-                      imports_exports$WYT == 2,]
+                      imports_exports$WYT == 2, ]
   })
   dataInput_three <- reactive({
     imports_exports[imports_exports$Month == as.character(input$"Water Year Type 3 (Below Normal)") &
                       imports_exports$WY == as.numeric(input$"Below Normal Years") &
-                      imports_exports$WYT == 3,]
+                      imports_exports$WYT == 3, ]
   })
   dataInput_four <- reactive({
     imports_exports[imports_exports$Month == as.character(input$"Water Year Type 4 (Dry)") &
                       imports_exports$WY == as.numeric(input$"Dry Years") &
-                      imports_exports$WYT == 4,]
+                      imports_exports$WYT == 4, ]
   })
   dataInput_five <- reactive({
     imports_exports[imports_exports$Month == as.character(input$"Water Year Type 5 (Critical)") &
                       imports_exports$WY == as.numeric(input$"Critical Years") &
-                      imports_exports$WYT == 5,]
+                      imports_exports$WYT == 5, ]
   })
   
   # render basemap and legend for each water year type (static)
   
   output$map_one <- renderLeaflet({
     leaflet(data) %>% addTiles() %>%
-      fitBounds(~ min(Long),  ~ min(Lat), ~ max(Long), ~ max(Lat)) %>%
+      fitBounds( ~ min(Long),  ~ min(Lat), ~ max(Long), ~ max(Lat)) %>%
       addLegend(
         data = dataInput_one(),
         "topright",
@@ -308,7 +306,7 @@ server <- function(input, output, session) {
   
   output$map_two <- renderLeaflet({
     leaflet(data) %>% addTiles() %>%
-      fitBounds(~ min(Long),  ~ min(Lat), ~ max(Long), ~ max(Lat)) %>%
+      fitBounds( ~ min(Long),  ~ min(Lat), ~ max(Long), ~ max(Lat)) %>%
       addLegend(
         data = dataInput_two(),
         "topright",
@@ -320,7 +318,7 @@ server <- function(input, output, session) {
   
   output$map_three <- renderLeaflet({
     leaflet(data) %>% addTiles() %>%
-      fitBounds(~ min(Long),  ~ min(Lat), ~ max(Long), ~ max(Lat)) %>%
+      fitBounds( ~ min(Long),  ~ min(Lat), ~ max(Long), ~ max(Lat)) %>%
       addLegend(
         data = dataInput_three(),
         "topright",
@@ -331,7 +329,7 @@ server <- function(input, output, session) {
   })
   output$map_four <- renderLeaflet({
     leaflet(data) %>% addTiles() %>%
-      fitBounds(~ min(Long),  ~ min(Lat), ~ max(Long), ~ max(Lat)) %>%
+      fitBounds( ~ min(Long),  ~ min(Lat), ~ max(Long), ~ max(Lat)) %>%
       addLegend(
         data = dataInput_four(),
         "topright",
@@ -342,7 +340,7 @@ server <- function(input, output, session) {
   })
   output$map_five <- renderLeaflet({
     leaflet(data) %>% addTiles() %>%
-      fitBounds(~ min(Long),  ~ min(Lat), ~ max(Long), ~ max(Lat)) %>%
+      fitBounds( ~ min(Long),  ~ min(Lat), ~ max(Long), ~ max(Lat)) %>%
       addLegend(
         data = dataInput_five(),
         "topright",
@@ -458,21 +456,9 @@ server <- function(input, output, session) {
     
   })
   
-  output$table_one <- renderTable({
-    head(wyTypes_one, n = 23)
-  }, bordered = TRUE, digits = 0)
-  
-  output$table_two <- renderTable({
-    tail(wyTypes_one, n = -23)
-  }, bordered = TRUE, digits = 0)
-  
-  output$table_three <- renderTable({
-    head(wyTypes_two, n = 23)
-  }, bordered = TRUE, digits = 0)
-  
-  output$table_four <- renderTable({
-    tail(wyTypes_two, n = -23)
-  }, bordered = TRUE, digits = 0)
+  output$wyInfo = DT::renderDataTable({
+    wyTypes
+  })
   
 }
 
